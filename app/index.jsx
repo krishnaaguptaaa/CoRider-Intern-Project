@@ -115,53 +115,73 @@ const Index = () => {
           </View>
         )}
       </View>
-      <FlatList
-        data={chats?.chats || []}
-        inverted
-        keyExtractor={(item) => item.id.toString()}
-        contentContainerStyle={{ padding: 16 }}
-        onEndReached={() => fetchChats(page + 1)}
-        onEndReachedThreshold={0.3}
-        renderItem={({ item }) => (
-          <View
+ <FlatList
+  data={chats?.chats || []}
+  inverted
+  keyExtractor={(item) => item.id.toString()}
+  contentContainerStyle={{ padding: 16 }}
+  onEndReached={() => fetchChats(page + 1)}
+  onEndReachedThreshold={0.3}
+  renderItem={({ item }) => (
+    <View
+      style={{
+        flexDirection: item.sender.self ? "row-reverse" : "row",
+        alignItems: "flex-start",
+        marginBottom: 16,
+      }}
+    >
+      {!item.sender.self && (
+        <View
+         style={{ position: 'relative' }}>
+          <Image
+            source={{uri:item.sender.image}}
             style={{
-              flexDirection: item.sender.self ? "row-reverse" : "row",
-              alignItems: "flex-start",
-              marginBottom: 16,
+              width: 36,
+              height: 36,
+              borderRadius: 18,
+              marginHorizontal: 8,
+              marginTop: 4,
             }}
-          >
-            {!item.sender.self && (
-              <Image
-                source={{ uri: item.sender.image }}
-                style={{
-                  width: 36,
-                  height: 36,
-                  borderRadius: 18,
-                  marginHorizontal: 8,
-                  marginTop: 4,
-                }}
-              />
-            )}
+          />
+          {item.sender.is_kyc_verified && (
             <View
               style={{
-                backgroundColor: item.sender.self ? "#3777f0" : "#fff",
-                padding: 12,
-                borderRadius: 12,
-                maxWidth: "75%",
+                position: 'absolute',
+                bottom: 0,
+                right: 4,
+                backgroundColor: '#fff',
+                borderRadius: 8,
+                padding: 1,
               }}
             >
-              <Text
-                style={{
-                  color: item.sender.self ? "#fff" : "#000",
-                  fontFamily: "inter-medium",
-                }}
-              >
-                {item.message}
-              </Text>
+              <Image
+                source={require('./../assets/images/Solid.png')}
+                style={{ width: 10, height: 10 }}
+              />
             </View>
-          </View>
-        )}
-      />
+          )}
+        </View>
+      )}
+      <View
+        style={{
+          backgroundColor: item.sender.self ? "#1C63D5" : "#fff",
+          padding: 12,
+          borderRadius: 12,
+          maxWidth: "75%",
+        }}
+      >
+        <Text
+          style={{
+            color: item.sender.self ? "#fff" : "#606060",
+            fontFamily: "inter-medium",
+          }}
+        >
+          {item.message}
+        </Text>
+      </View>
+    </View>
+  )}
+/>
 
 
             
@@ -209,6 +229,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: '10%',
+    backgroundColor:'#FAF9F4',
   },
   header: {
     flexDirection: 'row',
